@@ -19,16 +19,16 @@ function Calender() {
   };
 
   return (
-    <div>
+    <div className="flex flex-col gap-4">
       <div>
-        <h1 className="capitalize font-inter font-semibold text-xl">
+        <h1 className="capitalize font-inter font-semibold text-xl md:text-3xl">
           calender
         </h1>
       </div>
       <div>
         <button
           onClick={() => setModalOpen(true)}
-          className="px-4 py-2 bg-blue-500 text-white fixed bottom-4 right-4 rounded-full shadow-lg"
+          className="px-4 py-2 bg-blue-500 hover:bg-blue-900 text-white fixed bottom-4 right-4 rounded-full shadow-lg"
         >
           +
         </button>
