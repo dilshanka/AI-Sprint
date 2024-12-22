@@ -2,3 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: "inter";
+    src: url("src/assets/fonts/Inter-Regular.otf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }

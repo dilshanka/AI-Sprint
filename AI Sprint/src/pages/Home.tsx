@@ -1,9 +1,9 @@
-import React from 'react'
+import Calender from '@/section/mainSection/calender'
 
 const Home = () => {
   return (
     <div>
-      hello
+      <Calender />
     </div>
   )
 }
