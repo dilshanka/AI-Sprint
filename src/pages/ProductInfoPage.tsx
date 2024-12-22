@@ -14,7 +14,7 @@ const ProductDemo: React.FC = () => {
   return (
     <div className="min-h-screen bg-white text-gray-800">
     
-        <div className="container mx-auto px-4 py-6 text-center">
+        <div className="container mx-auto px-4 py-6 text-center mt-10">
           <h1 className="text-3xl font-bold text-black">Product Information</h1>
         </div>
    
