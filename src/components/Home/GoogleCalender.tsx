@@ -6,11 +6,13 @@ import {
   startOfWeek,
   endOfWeek,
   addDays,
+  isSameDay,
 } from "date-fns";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 const GoogleCalender = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
+  const today = new Date();
 
   const daysInMonth = () => {
     const startDate = startOfWeek(startOfMonth(currentMonth));
@@ -41,12 +43,21 @@ const GoogleCalender = () => {
 
   const renderCells = () => {
     const dates = daysInMonth();
-    return dates.map((day, index) => (
-      <div key={index} className="p-1 sm:p-4 border text-center bg-blue-200 hover:bg-blue-500">
-        <span className="text-black">{format(day, "d")}</span>
-        {/* Add events display here */}
-      </div>
-    ));
+    return dates.map((day, index) => {
+      const isToday = isSameDay(day, today); // Check if the current day is today
+      return (
+        <div
+          key={index}
+          className={`p-1 sm:p-4 border text-center ${
+            isToday
+              ? "bg-blue-900 hover:bg-blue-500 text-white hover:text-black font-bold" // Highlight today's date
+              : "bg-blue-200 hover:bg-blue-500 text-black hover:text-white hover:font-bold"
+          }`}
+        >
+          <span>{format(day, "d")}</span>
+        </div>
+      );
+    }); 
   };
 
   return (
