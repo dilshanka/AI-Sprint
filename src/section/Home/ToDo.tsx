@@ -31,7 +31,9 @@ const ToDoList = () => {
 
   return (
     <div className="mt-4 sm:mt-8">
-      <h1 className="text-xl md:text-3xl font-bold mb-2 sm:mb-4">Today To-Do List</h1>
+      <h1 className="text-xl md:text-3xl font-bold mb-2 sm:mb-4">
+        Today To-Do List
+      </h1>
 
       {/* Input Field */}
       <div className="flex gap-2 mb-2 sm:mb-4">
@@ -62,7 +64,7 @@ const ToDoList = () => {
           </thead>
           <tbody>
             {tasks.map((task, index) => (
-              <tr key={index} className="hover:bg-gray-100">
+              <tr key={index} className="hover:bg-gray-100 font-medium text-xs xsm:text-sm md:text-base">
                 <td className="p-2 border-y border-l border-gray-300">
                   <input
                     type="text"
@@ -95,7 +97,9 @@ const ToDoList = () => {
 
       {/* No Tasks Message */}
       {tasks.length === 0 && (
-        <p className="text-center text-gray-500 mt-2 sm:mt-4">No tasks for today!</p>
+        <p className="text-center text-gray-500 mt-2 sm:mt-4">
+          No tasks for today!
+        </p>
       )}
     </div>
   );
