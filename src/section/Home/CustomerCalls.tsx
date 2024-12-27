@@ -1,3 +1,5 @@
+import DeleteModal from "@/components/Home/DeleteModal";
+import EditModal from "@/components/Home/EditModal";
 import { useState } from "react";
 import { MdDelete, MdEdit } from "react-icons/md";
 
@@ -10,17 +12,34 @@ const CustomerCalls = () => {
     { description: "Call client E", status: "Pending" },
   ]);
 
-  const handleDelete = (index: number) => {
-    setCalls(calls.filter((_, i) => i !== index));
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState<number | null>(null);
+
+  const handleEditClick = (index: number) => {
+    setCurrentIndex(index);
+    setEditModalOpen(true);
   };
 
-  const handleEdit = (index: number) => {
-    const newDescription = prompt("Enter new description:");
-    if (newDescription) {
+  const handleDeleteClick = (index: number) => {
+    setCurrentIndex(index);
+    setDeleteModalOpen(true);
+  };
+
+  const handleEditSave = (newDescription: string) => {
+    if (currentIndex !== null) {
       const updatedCalls = [...calls];
-      updatedCalls[index].description = newDescription;
+      updatedCalls[currentIndex].description = newDescription;
       setCalls(updatedCalls);
     }
+    setEditModalOpen(false);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (currentIndex !== null) {
+      setCalls(calls.filter((_, i) => i !== currentIndex));
+    }
+    setDeleteModalOpen(false);
   };
 
   const getStatusStyles = (status: string) => {
@@ -37,8 +56,8 @@ const CustomerCalls = () => {
   };
 
   return (
-    <div className="pt-8">
-      <h2 className="capitalize font-inter font-semibold text-xl md:text-3xl mb-4">
+    <div className="mt-4 sm:mt-8">
+      <h2 className="capitalize font-inter font-semibold text-xl md:text-3xl mb-2 sm:mb-4">
         Customer Calls
       </h2>
       <table className="table-auto w-full border border-gray-300">
@@ -51,13 +70,13 @@ const CustomerCalls = () => {
         </thead>
         <tbody>
           {calls.map((call, index) => (
-            <tr key={index} className="hover:bg-gray-100 font-medium">
+            <tr key={index} className="hover:bg-gray-100 font-medium text-xs xsm:text-sm md:text-base">
               <td className="p-2 border-y border-l border-gray-300">
                 {call.description}
               </td>
-              <td className="p-2 border-y border-gray-300 text-center text-sm">
+              <td className="p-2 border-y border-gray-300 text-center text-[10px] xsm:text-xs sm:text-sm">
                 <span
-                  className={`px-2 py-1 rounded-xl border ${getStatusStyles(
+                  className={`px-1 xsm:px-2 py-1 rounded-xl border ${getStatusStyles(
                     call.status
                   )}`}
                 >
@@ -66,13 +85,19 @@ const CustomerCalls = () => {
               </td>
               <td className="p-2 border-y border-gray-300 text-center">
                 <button
-                  onClick={() => handleEdit(index)}
-                  className="mr-2 px-2 py-1 bg-gray-300 text-blue-500 hover:bg-gray-500 hover:text-blue-300 rounded"
+                  onClick={() => handleEditClick(index)}
+                  disabled={call.status === "Completed"}
+                  className={`mr-2 px-2 py-1 rounded ${
+                    call.status === "Completed"
+                      ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                      : "bg-gray-300 text-blue-500 hover:bg-gray-500 hover:text-blue-300"
+                  }`}
                 >
                   <MdEdit />
                 </button>
+
                 <button
-                  onClick={() => handleDelete(index)}
+                  onClick={() => handleDeleteClick(index)}
                   className="px-2 py-1 bg-gray-300 text-red-500 hover:bg-gray-500 hover:text-red-300 rounded"
                 >
                   <MdDelete />
@@ -82,6 +107,20 @@ const CustomerCalls = () => {
           ))}
         </tbody>
       </table>
+
+      {/* Modals */}
+      <EditModal
+        isOpen={isEditModalOpen}
+        description={currentIndex !== null ? calls[currentIndex].description : ""}
+        title="Update Customer Calls"
+        onSave={handleEditSave}
+        onClose={() => setEditModalOpen(false)}
+      />
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        onConfirm={handleDeleteConfirm}
+        onClose={() => setDeleteModalOpen(false)}
+      />
     </div>
   );
 };
