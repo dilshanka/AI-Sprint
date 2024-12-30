@@ -48,7 +48,7 @@ const GoogleCalender = () => {
       return (
         <div
           key={index}
-          className={`p-1 sm:p-4 border text-center ${
+          className={`p-1 sm:p-12 border rounded-2xl text-center ${
             isToday
               ? "bg-blue-900 hover:bg-blue-500 text-white hover:text-black font-bold" // Highlight today's date
               : "bg-blue-200 hover:bg-blue-500 text-black hover:text-white hover:font-bold"
