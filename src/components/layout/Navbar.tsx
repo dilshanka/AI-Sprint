@@ -13,8 +13,8 @@ const Navbar: React.FC = () => {
   return (
     <nav className="bg-black fixed top-0 left-0 w-full z-50 shadow-md">
       <div className="container mx-auto flex justify-between items-center p-4 ">
-        <Link to="/" className="text-white text-xl font-bold text-nowrap">
-          AI SPRINT
+        <Link to="/home" className="text-white text-xl font-bold text-nowrap">
+          Sysco Sales Consultant
         </Link>
         <button
           className="text-white md:hidden"
@@ -29,7 +29,7 @@ const Navbar: React.FC = () => {
           } absolute top-16 left-0  w-full bg-black md:static md:flex md:items-center md:justify-end`}
         >
           <Link
-            to="/"
+            to="/home"
             className="block text-white px-4 py-2 md:inline-block"
             onClick={() => setIsMenuOpen(false)}
           >
