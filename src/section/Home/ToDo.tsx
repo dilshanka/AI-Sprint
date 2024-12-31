@@ -1,58 +1,60 @@
+import { inQueueTasks, Task, todayTasks } from "@/constants/todoTask";
 import { useState } from "react";
-import { MdDelete } from "react-icons/md";
-
-type Task = {
-  text: string;
-  completed: boolean;
-};
+import { MdEdit } from "react-icons/md";
 
 const ToDoList = () => {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [newTask, setNewTask] = useState("");
+  const [tasks, setTasks] = useState<Task[]>(todayTasks);
+  const [queueTasks, setQueueTasks] = useState<Task[]>(inQueueTasks);
+  const [popupTask, setPopupTask] = useState<Task | null>(null);
+  const [isQueue, setIsQueue] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editIndex, setEditIndex] = useState<number | null>(null);
 
-  const handleAddTask = () => {
-    if (newTask.trim() !== "") {
-      setTasks([...tasks, { text: newTask, completed: false }]);
-      setNewTask("");
+  const openAddPopup = (queue: boolean) => {
+    setPopupTask({ description: "", status: "Pending" });
+    setIsQueue(queue);
+    setIsEditMode(false);
+    setShowPopup(true);
+  };
+
+  const openEditPopup = (task: Task, index: number, queue: boolean) => {
+    setPopupTask(task);
+    setEditIndex(index);
+    setIsQueue(queue);
+    setIsEditMode(true);
+    setShowPopup(true);
+  };
+
+  const handleSaveTask = () => {
+    if (popupTask) {
+      const targetTasks = isQueue ? queueTasks : tasks;
+
+      if (isEditMode && editIndex !== null) {
+        const updatedTasks = targetTasks.map((task, i) =>
+          i === editIndex ? popupTask : task
+        );
+        isQueue ? setQueueTasks(updatedTasks) : setTasks(updatedTasks);
+      } else {
+        const updatedTasks = [...targetTasks, popupTask];
+        isQueue ? setQueueTasks(updatedTasks) : setTasks(updatedTasks);
+      }
+
+      closePopup();
     }
   };
 
-  const toggleTaskCompletion = (index: number) => {
-    const updatedTasks = tasks.map((task, i) =>
-      i === index ? { ...task, completed: !task.completed } : task
-    );
-    setTasks(updatedTasks);
+  const closePopup = () => {
+    setShowPopup(false);
+    setPopupTask(null);
+    setEditIndex(null);
+    setIsQueue(false);
+    setIsEditMode(false);
   };
 
-  const handleDeleteTask = (index: number) => {
-    const updatedTasks = tasks.filter((_, i) => i !== index);
-    setTasks(updatedTasks);
-  };
-
-  return (
-    <div className="mt-4 sm:mt-8">
-      <h1 className="text-xl md:text-3xl font-bold mb-2 sm:mb-4">
-        Today To-Do List
-      </h1>
-
-      {/* Input Field */}
-      <div className="flex gap-2 mb-2 sm:mb-4">
-        <input
-          type="text"
-          value={newTask}
-          onChange={(e) => setNewTask(e.target.value)}
-          placeholder="Add a new task"
-          className="sm:flex-1 p-1 sm:p-2 border-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
-        />
-        <button
-          onClick={handleAddTask}
-          className="bg-blue-500 text-white px-4 py-2 rounded-xl sm:rounded-2xl hover:bg-blue-600"
-        >
-          +
-        </button>
-      </div>
-
-      {/* Task List */}
+  const renderTable = (title: string, tasks: Task[], isQueue = false) => (
+    <div className="mb-8">
+      <h2 className="text-lg sm:text-xl font-bold mb-2">{title}</h2>
       <div className="overflow-x-auto">
         <table className="table-auto w-full text-left border border-gray-300">
           <thead>
@@ -64,29 +66,27 @@ const ToDoList = () => {
           </thead>
           <tbody>
             {tasks.map((task, index) => (
-              <tr key={index} className="hover:bg-gray-100 font-medium text-xs xsm:text-sm md:text-base">
+              <tr
+                key={index}
+                className="hover:bg-gray-100 font-medium text-xs xsm:text-sm md:text-base"
+              >
                 <td className="p-2 border-y border-l border-gray-300">
                   <input
                     type="text"
-                    value={task.text}
-                    // onChange={(e) => handleEditTask(index, e.target.value)}
+                    value={task.description}
                     className="w-full bg-transparent outline-none"
+                    readOnly
                   />
                 </td>
                 <td className="p-2 border-y border-gray-300 text-center">
-                  <input
-                    type="checkbox"
-                    checked={task.completed}
-                    onChange={() => toggleTaskCompletion(index)}
-                    className="w-5 h-5"
-                  />
+                  {task.status}
                 </td>
                 <td className="p-2 border-y border-r border-gray-300 flex justify-center gap-2">
                   <button
-                    onClick={() => handleDeleteTask(index)}
-                    className="hover:text-red-700 h-7 text-xl"
+                    onClick={() => openEditPopup(task, index, isQueue)}
+                    className="hover:text-blue-600 h-7 text-xl"
                   >
-                    <MdDelete />
+                    <MdEdit />
                   </button>
                 </td>
               </tr>
@@ -94,12 +94,78 @@ const ToDoList = () => {
           </tbody>
         </table>
       </div>
-
-      {/* No Tasks Message */}
       {tasks.length === 0 && (
         <p className="text-center text-gray-500 mt-2 sm:mt-4">
-          No tasks for today!
+          No tasks found in this list!
         </p>
+      )}
+      <button
+        onClick={() => openAddPopup(isQueue)}
+        className="mt-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+      >
+        Add Task
+      </button>
+    </div>
+  );
+
+  return (
+    <div className="mt-4 sm:mt-8">
+      <h1 className="text-xl md:text-3xl font-bold mb-2 sm:mb-4">
+        Task Management
+      </h1>
+
+      {/* Render Tables */}
+      {renderTable("Today To-Do List", tasks)}
+      {renderTable("In Queue", queueTasks, true)}
+
+      {/* Task Popup */}
+      {showPopup && popupTask && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-4 rounded shadow-lg w-full max-w-md">
+            <h2 className="text-lg font-bold mb-4">
+              {isEditMode ? "Edit Task" : "Add Task"}
+            </h2>
+            <div className="mb-4">
+              <label className="block mb-2 font-medium">Description</label>
+              <input
+                type="text"
+                value={popupTask.description}
+                onChange={(e) =>
+                  setPopupTask({ ...popupTask, description: e.target.value })
+                }
+                className="w-full p-2 border rounded"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block mb-2 font-medium">Status</label>
+              <select
+                value={popupTask.status}
+                onChange={(e) =>
+                  setPopupTask({ ...popupTask, status: e.target.value })
+                }
+                className="w-full p-2 border rounded"
+              >
+                <option value="Pending">Pending</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+              </select>
+            </div>
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={closePopup}
+                className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSaveTask}
+                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
