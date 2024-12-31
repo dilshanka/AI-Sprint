@@ -119,7 +119,7 @@ const ProspectingCustomers = () => {
   return (
     <div className="mt-4 sm:mt-8">
       <h2 className="capitalize font-inter font-semibold text-xl md:text-3xl mb-2 sm:mb-4">
-        Prospecting Calls
+        Prospecting Customers
       </h2>
       <table className="table-auto w-full border border-gray-300">
         <thead>

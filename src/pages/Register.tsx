@@ -15,7 +15,7 @@ const Register = () => {
 
     if (name && email && password) {
       console.log("Registration Submitted:", { name, email, password });
-      navigate("/"); // Navigate to the home page after registration
+      navigate("/home"); // Navigate to the home page after registration
     } else {
       alert("Please fill out all fields.");
     }
@@ -37,12 +37,12 @@ const Register = () => {
       {/* Right Side */}
       <div className="w-full md:w-1/2 py-8 px-8 sm:px-16">
         <div className="text-right mb-4">
-          <a href="/login" className="text-sm text-gray-500">
+          {/* <a href="/" className="text-sm text-gray-500">
             Already have an account?{" "}
             <span className="text-red-500 hover:text-gray-500 hover:underline">
               Sign In
             </span>
-          </a>
+          </a> */}
         </div>
         <div className="flex flex-col gap-8 h-full">
           <h2 className="text-4xl sm:text-5xl font-inter font-semibold text-gray-800 text-center my-6">

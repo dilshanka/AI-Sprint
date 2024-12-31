@@ -14,7 +14,7 @@ const Login = () => {
 
     if (email && password) {
       console.log("Login Submitted:", { email, password });
-      navigate("/"); // Navigate to the home page
+      navigate("/home"); // Navigate to the home page
     } else {
       alert("Please enter both email and password.");
     }
