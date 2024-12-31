@@ -7,6 +7,9 @@ import Home from "./pages/Home";
 import SalesRepDashboard from "./pages/DashboardPage";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Inquries from "./pages/CustomerInquiries";
+import SalesReport from "./pages/SalesReporting";
+
 
 const App: React.FC = () => {
   return (
@@ -23,6 +26,8 @@ const App: React.FC = () => {
                 <Route path="/products" element={<ProductInfo />} />
                 <Route path="/product/:id" element={<ProductDetails />} />
                 <Route path="/dashboard" element={<SalesRepDashboard />} />
+                <Route path="/Inquries" element={<Inquries />} />
+                <Route path="/SalesReport" element={<SalesReport />} />
               </Routes>
             </Layout>
           }
