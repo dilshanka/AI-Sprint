@@ -49,6 +49,23 @@ const Navbar: React.FC = () => {
           >
             Dashboard
           </Link>
+
+          <Link
+            to="/Inquries"
+            className="block text-white px-4 py-2 md:inline-block"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Customer Inquiries
+          </Link>
+          <Link
+            to="/SalesReport"
+            className="block text-white px-4 py-2 md:inline-block"
+            onClick={() => setIsMenuOpen(false)}
+          >
+             Reports
+          </Link>
+
+
         </div>
       </div>
     </nav>
