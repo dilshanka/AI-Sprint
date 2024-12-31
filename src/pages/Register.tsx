@@ -15,7 +15,7 @@ const Register = () => {
 
     if (name && email && password) {
       console.log("Registration Submitted:", { name, email, password });
-      navigate("/"); // Navigate to the home page after registration
+      navigate("/home"); // Navigate to the home page after registration
     } else {
       alert("Please fill out all fields.");
     }
