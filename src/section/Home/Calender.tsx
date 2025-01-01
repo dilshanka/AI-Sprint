@@ -24,12 +24,12 @@ function Calender() {
         <h1 className="capitalize font-inter font-semibold text-xl md:text-3xl">
           calender
         </h1>
-        <button
+        {/* <button
           onClick={() => setModalOpen(true)}
           className="px-4 py-2 bg-blue-500 hover:bg-blue-900 text-white bottom-4 right-4 rounded-full shadow-lg"
         >
           +
-        </button>
+        </button> */}
       </div>
       <div>
         <GoogleCalender />

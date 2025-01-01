@@ -9,7 +9,6 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Inquries from "./pages/CustomerInquiries";
 import SalesReport from "./pages/SalesReporting";
-import InquiryPage from "./pages/Inquiry";
 import ChatbotPage from "./pages/ChatbotPage";
 
 
@@ -29,7 +28,6 @@ const App: React.FC = () => {
                 <Route path="/products" element={<ProductInfo />} />
                 <Route path="/product/:id" element={<ProductDetails />} />
                 <Route path="/dashboard" element={<SalesRepDashboard />} />
-                <Route path="/get-inquries" element={<InquiryPage />} />
                 <Route path="/Inquries" element={<Inquries />} />
                 <Route path="/SalesReport" element={<SalesReport />} />
              

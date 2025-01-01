@@ -28,7 +28,12 @@ const ToDoList = () => {
   };
 
   const openAddPopup = () => {
-    setPopupTask({ description: "", status: "Pending" });
+    setPopupTask({
+      description: "",
+      status: "Pending",
+      priority: "",
+      endDate: "",
+    });
     setShowPopup(true);
   };
 
@@ -80,6 +85,19 @@ const ToDoList = () => {
     }
   };
 
+  const getPriorityStyles = (status: string) => {
+    switch (status) {
+      case "Low":
+        return "bg-green-100 text-green-700 border-green-500";
+      case "Medium":
+        return "bg-yellow-100 text-yellow-700 border-yellow-500";
+      case "High":
+        return "bg-red-100 text-red-700 border-red-500";
+      default:
+        return "bg-gray-100 text-gray-700 border-gray-500";
+    }
+  };
+
   const renderTable = (title: string, tasks: Task[], isQueue = false) => (
     <div className="mb-8">
       <h2 className="text-lg sm:text-xl font-bold mb-2">{title}</h2>
@@ -89,6 +107,8 @@ const ToDoList = () => {
             <tr className="bg-gray-200 font-inter text-sm sm:text-center">
               <th className="p-2 border-gray-300">Description</th>
               <th className="p-2 border-gray-300">Status</th>
+              <th className="p-2 border-gray-300">Priority</th>
+              <th className="p-2 border-gray-300">End Date</th>
               <th className="p-2 border-gray-300">Actions</th>
             </tr>
           </thead>
@@ -96,7 +116,7 @@ const ToDoList = () => {
             {tasks.map((task, index) => (
               <tr
                 key={index}
-                className="hover:bg-gray-100 font-medium text-xs xsm:text-sm md:text-base even:bg-gray-50"
+                className="hover:bg-gray-100 font-medium text-xs xsm:text-sm even:bg-gray-50"
               >
                 <td className="p-2 border-y border-l border-gray-300">
                   {task.description}
@@ -109,6 +129,18 @@ const ToDoList = () => {
                   >
                     {task.status}
                   </span>
+                </td>
+                <td className="p-2 border-y border-gray-300 text-center">
+                  <span
+                    className={`px-1 xsm:px-2 py-1 rounded-xl border ${getPriorityStyles(
+                      task.priority
+                    )}`}
+                  >
+                    {task.priority}
+                  </span>
+                </td>
+                <td className="p-2 border-y border-gray-300 text-center">
+                  {task.endDate}
                 </td>
                 <td className="p-2 border-y border-r border-gray-300 flex justify-center gap-2">
                   {isQueue ? (
