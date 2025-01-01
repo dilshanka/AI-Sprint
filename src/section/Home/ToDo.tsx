@@ -1,3 +1,4 @@
+import EditModal from "@/components/Home/EditModal";
 import { inQueueTasks, Task, todayTasks } from "@/constants/todoTask";
 import { useState } from "react";
 import { MdEdit } from "react-icons/md";
@@ -6,50 +7,77 @@ const ToDoList = () => {
   const [tasks, setTasks] = useState<Task[]>(todayTasks);
   const [queueTasks, setQueueTasks] = useState<Task[]>(inQueueTasks);
   const [popupTask, setPopupTask] = useState<Task | null>(null);
-  const [isQueue, setIsQueue] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [editIndex, setEditIndex] = useState<number | null>(null);
+  const [showConfirmPopup, setShowConfirmPopup] = useState(false);
+  const [taskToMoveIndex, setTaskToMoveIndex] = useState<number | null>(null);
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState<number | null>(null);
 
-  const openAddPopup = (queue: boolean) => {
-    setPopupTask({ description: "", status: "Pending" });
-    setIsQueue(queue);
-    setIsEditMode(false);
-    setShowPopup(true);
+  const handleEditClick = (index: number) => {
+    setCurrentIndex(index);
+    setEditModalOpen(true);
   };
 
-  const openEditPopup = (task: Task, index: number, queue: boolean) => {
-    setPopupTask(task);
-    setEditIndex(index);
-    setIsQueue(queue);
-    setIsEditMode(true);
-    setShowPopup(true);
-  };
-
-  const handleSaveTask = () => {
-    if (popupTask) {
-      const targetTasks = isQueue ? queueTasks : tasks;
-
-      if (isEditMode && editIndex !== null) {
-        const updatedTasks = targetTasks.map((task, i) =>
-          i === editIndex ? popupTask : task
-        );
-        isQueue ? setQueueTasks(updatedTasks) : setTasks(updatedTasks);
-      } else {
-        const updatedTasks = [...targetTasks, popupTask];
-        isQueue ? setQueueTasks(updatedTasks) : setTasks(updatedTasks);
-      }
-
-      closePopup();
+  const handleEditSave = (newDescription: string) => {
+    if (currentIndex !== null) {
+      const updatedCalls = [...tasks];
+      updatedCalls[currentIndex].description = newDescription;
+      setTasks(updatedCalls);
     }
+    setEditModalOpen(false);
+  };
+
+  const openAddPopup = () => {
+    setPopupTask({ description: "", status: "Pending" });
+    setShowPopup(true);
   };
 
   const closePopup = () => {
     setShowPopup(false);
     setPopupTask(null);
-    setEditIndex(null);
-    setIsQueue(false);
-    setIsEditMode(false);
+  };
+
+  const openConfirmPopup = (index: number) => {
+    setTaskToMoveIndex(index);
+    setShowConfirmPopup(true);
+  };
+
+  const closeConfirmPopup = () => {
+    setShowConfirmPopup(false);
+    setTaskToMoveIndex(null);
+  };
+
+  const handleSaveTask = () => {
+    if (popupTask) {
+      setTasks([...tasks, popupTask]);
+      closePopup();
+    }
+  };
+
+  const moveTaskToToday = () => {
+    if (taskToMoveIndex !== null) {
+      const taskToMove = queueTasks[taskToMoveIndex];
+      const updatedQueueTasks = queueTasks.filter(
+        (_, index) => index !== taskToMoveIndex
+      );
+
+      setQueueTasks(updatedQueueTasks);
+      setTasks([...tasks, taskToMove]);
+      closeConfirmPopup();
+    }
+  };
+
+  const getStatusStyles = (status: string) => {
+    switch (status) {
+      case "Pending":
+        return "bg-yellow-100 text-yellow-700 border-yellow-500";
+      case "Completed":
+        return "bg-green-100 text-green-700 border-green-500";
+      case "In Progress":
+        return "bg-blue-100 text-blue-700 border-blue-500";
+      default:
+        return "bg-gray-100 text-gray-700 border-gray-500";
+    }
   };
 
   const renderTable = (title: string, tasks: Task[], isQueue = false) => (
@@ -68,26 +96,41 @@ const ToDoList = () => {
             {tasks.map((task, index) => (
               <tr
                 key={index}
-                className="hover:bg-gray-100 font-medium text-xs xsm:text-sm md:text-base"
+                className="hover:bg-gray-100 font-medium text-xs xsm:text-sm md:text-base even:bg-gray-50"
               >
                 <td className="p-2 border-y border-l border-gray-300">
-                  <input
-                    type="text"
-                    value={task.description}
-                    className="w-full bg-transparent outline-none"
-                    readOnly
-                  />
+                  {task.description}
                 </td>
                 <td className="p-2 border-y border-gray-300 text-center">
-                  {task.status}
+                  <span
+                    className={`px-1 xsm:px-2 py-1 rounded-xl border ${getStatusStyles(
+                      task.status
+                    )}`}
+                  >
+                    {task.status}
+                  </span>
                 </td>
                 <td className="p-2 border-y border-r border-gray-300 flex justify-center gap-2">
-                  <button
-                    onClick={() => openEditPopup(task, index, isQueue)}
-                    className="hover:text-blue-600 h-7 text-xl"
-                  >
-                    <MdEdit />
-                  </button>
+                  {isQueue ? (
+                    <button
+                      onClick={() => openConfirmPopup(index)}
+                      className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600"
+                    >
+                      Move
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleEditClick(index)}
+                      disabled={task.status === "Completed"}
+                      className={`mr-2 px-2 py-1 rounded ${
+                        task.status === "Completed"
+                          ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                          : "bg-gray-300 text-blue-500 hover:bg-gray-500 hover:text-blue-300"
+                      }`}
+                    >
+                      <MdEdit />
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}
@@ -99,56 +142,40 @@ const ToDoList = () => {
           No tasks found in this list!
         </p>
       )}
-      <button
-        onClick={() => openAddPopup(isQueue)}
-        className="mt-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-      >
-        Add Task
-      </button>
     </div>
   );
 
   return (
     <div className="mt-4 sm:mt-8">
-      <h1 className="text-xl md:text-3xl font-bold mb-2 sm:mb-4">
-        Task Management
-      </h1>
-
-      {/* Render Tables */}
+      <div className="flex justify-between items-center">
+        <h1 className="text-xl md:text-3xl font-bold mb-2 sm:mb-4">
+          Task Management
+        </h1>
+        <button
+          onClick={openAddPopup}
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        >
+          Add Task
+        </button>
+      </div>
       {renderTable("Today To-Do List", tasks)}
       {renderTable("In Queue", queueTasks, true)}
 
       {/* Task Popup */}
-      {showPopup && popupTask && (
+      {showPopup && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-4 rounded shadow-lg w-full max-w-md">
-            <h2 className="text-lg font-bold mb-4">
-              {isEditMode ? "Edit Task" : "Add Task"}
-            </h2>
+            <h2 className="text-lg font-bold mb-4">Add Task</h2>
             <div className="mb-4">
               <label className="block mb-2 font-medium">Description</label>
               <input
                 type="text"
-                value={popupTask.description}
+                value={popupTask?.description || ""}
                 onChange={(e) =>
-                  setPopupTask({ ...popupTask, description: e.target.value })
+                  setPopupTask({ ...popupTask!, description: e.target.value })
                 }
                 className="w-full p-2 border rounded"
               />
-            </div>
-            <div className="mb-4">
-              <label className="block mb-2 font-medium">Status</label>
-              <select
-                value={popupTask.status}
-                onChange={(e) =>
-                  setPopupTask({ ...popupTask, status: e.target.value })
-                }
-                className="w-full p-2 border rounded"
-              >
-                <option value="Pending">Pending</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Completed">Completed</option>
-              </select>
             </div>
             <div className="flex justify-end gap-2">
               <button
@@ -167,6 +194,40 @@ const ToDoList = () => {
           </div>
         </div>
       )}
+
+      {/* Confirm Move Popup */}
+      {showConfirmPopup && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-4 rounded shadow-lg w-full max-w-md">
+            <h2 className="text-lg font-bold mb-4">Confirm Move</h2>
+            <p className="mb-4">Are you sure you want to move this task?</p>
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={closeConfirmPopup}
+                className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={moveTaskToToday}
+                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <EditModal
+        isOpen={isEditModalOpen}
+        description={
+          currentIndex !== null ? tasks[currentIndex].description : ""
+        }
+        title="Update Task"
+        onSave={handleEditSave}
+        onClose={() => setEditModalOpen(false)}
+      />
     </div>
   );
 };
