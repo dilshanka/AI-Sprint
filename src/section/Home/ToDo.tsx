@@ -1,4 +1,4 @@
-import EditModal from "@/components/Home/EditModal";
+import EditTask from "@/components/Home/TaskEdit";
 import { inQueueTasks, Task, todayTasks } from "@/constants/todoTask";
 import { useState } from "react";
 import { MdEdit } from "react-icons/md";
@@ -11,19 +11,18 @@ const ToDoList = () => {
   const [showConfirmPopup, setShowConfirmPopup] = useState(false);
   const [taskToMoveIndex, setTaskToMoveIndex] = useState<number | null>(null);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState<number | null>(null);
+  const [currentTask, setCurrentTask] = useState<Task | null>(null);
 
-  const handleEditClick = (index: number) => {
-    setCurrentIndex(index);
+  const handleEditClick = (task: Task) => {
+    setCurrentTask(task);
     setEditModalOpen(true);
   };
 
-  const handleEditSave = (newDescription: string) => {
-    if (currentIndex !== null) {
-      const updatedCalls = [...tasks];
-      updatedCalls[currentIndex].description = newDescription;
-      setTasks(updatedCalls);
-    }
+  const handleEditSave = (updatedTask: Task) => {
+    const updatedTasks = tasks.map((task) =>
+      task.description === currentTask?.description ? updatedTask : task
+    );
+    setTasks(updatedTasks); // Update the task list with the edited task
     setEditModalOpen(false);
   };
 
@@ -152,7 +151,7 @@ const ToDoList = () => {
                     </button>
                   ) : (
                     <button
-                      onClick={() => handleEditClick(index)}
+                      onClick={() => handleEditClick(task)}
                       disabled={task.status === "Completed"}
                       className={`mr-2 px-2 py-1 rounded ${
                         task.status === "Completed"
@@ -196,7 +195,7 @@ const ToDoList = () => {
       {/* Task Popup */}
       {showPopup && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-4 rounded shadow-lg w-full max-w-md">
+          <div className="bg-white p-4 rounded shadow-lg w-full md:w-1/2">
             <h2 className="text-lg font-bold mb-4">Add Task</h2>
             <div className="mb-4">
               <label className="block mb-2 font-medium">Description</label>
@@ -205,6 +204,43 @@ const ToDoList = () => {
                 value={popupTask?.description || ""}
                 onChange={(e) =>
                   setPopupTask({ ...popupTask!, description: e.target.value })
+                }
+                className="w-full p-2 border rounded"
+              />
+              <label className="block my-2 font-medium">Status</label>
+              <select
+                value={popupTask?.status || ""}
+                onChange={(e) =>
+                  setPopupTask({ ...popupTask!, status: e.target.value })
+                }
+                className="w-full p-2 border rounded"
+              >
+                {["To Do", "In Progress", "Completed"].map((status) => (
+                  <option key={status} value={status}>
+                    {status}
+                  </option>
+                ))}
+              </select>
+              <label className="block my-2 font-medium">Priority</label>
+              <select
+                value={popupTask?.priority || ""}
+                onChange={(e) =>
+                  setPopupTask({ ...popupTask!, priority: e.target.value })
+                }
+                className="w-full p-2 border rounded"
+              >
+                {["Low", "Medium", "High"].map((priority) => (
+                  <option key={priority} value={priority}>
+                    {priority}
+                  </option>
+                ))}
+              </select>
+              <label className="block my-2 font-medium">End Date</label>
+              <input
+                type="date"
+                value={popupTask?.endDate || ""}
+                onChange={(e) =>
+                  setPopupTask({ ...popupTask!, endDate: e.target.value })
                 }
                 className="w-full p-2 border rounded"
               />
@@ -251,12 +287,9 @@ const ToDoList = () => {
         </div>
       )}
 
-      <EditModal
+      <EditTask
         isOpen={isEditModalOpen}
-        description={
-          currentIndex !== null ? tasks[currentIndex].description : ""
-        }
-        title="Update Task"
+        task={currentTask}
         onSave={handleEditSave}
         onClose={() => setEditModalOpen(false)}
       />
