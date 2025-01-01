@@ -70,7 +70,10 @@ const CustomerCalls = () => {
         </thead>
         <tbody>
           {calls.map((call, index) => (
-            <tr key={index} className="hover:bg-gray-100 font-medium text-xs xsm:text-sm md:text-base">
+            <tr
+              key={index}
+              className="hover:bg-gray-100 font-medium text-xs xsm:text-sm md:text-base even:bg-gray-50"
+            >
               <td className="p-2 border-y border-l border-gray-300">
                 {call.description}
               </td>
@@ -111,7 +114,9 @@ const CustomerCalls = () => {
       {/* Modals */}
       <EditModal
         isOpen={isEditModalOpen}
-        description={currentIndex !== null ? calls[currentIndex].description : ""}
+        description={
+          currentIndex !== null ? calls[currentIndex].description : ""
+        }
         title="Update Customer Calls"
         onSave={handleEditSave}
         onClose={() => setEditModalOpen(false)}

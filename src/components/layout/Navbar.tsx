@@ -1,7 +1,7 @@
 // src/components/Navbar.tsx
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { FiMenu, FiX } from 'react-icons/fi';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { FiMenu, FiX } from "react-icons/fi";
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -25,7 +25,7 @@ const Navbar: React.FC = () => {
         </button>
         <div
           className={`${
-            isMenuOpen ? 'block' : 'hidden'
+            isMenuOpen ? "block" : "hidden"
           } absolute top-16 left-0  w-full bg-black md:static md:flex md:items-center md:justify-end`}
         >
           <Link
@@ -62,10 +62,8 @@ const Navbar: React.FC = () => {
             className="block text-white px-4 py-2 md:inline-block"
             onClick={() => setIsMenuOpen(false)}
           >
-             Reports
+            Reports
           </Link>
-
-
         </div>
       </div>
     </nav>
@@ -73,5 +71,3 @@ const Navbar: React.FC = () => {
 };
 
 export default Navbar;
-
-

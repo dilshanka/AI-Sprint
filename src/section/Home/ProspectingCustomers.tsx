@@ -131,7 +131,10 @@ const ProspectingCustomers = () => {
         </thead>
         <tbody>
           {prospects.map((prospect, index) => (
-            <tr key={index} className="hover:bg-gray-100 font-medium text-xs xsm:text-sm md:text-base">
+            <tr
+              key={index}
+              className="hover:bg-gray-100 font-medium text-xs xsm:text-sm md:text-base even:bg-gray-50"
+            >
               <td className="p-2 border-y border-l border-gray-300">
                 {prospect.description}
               </td>
@@ -172,7 +175,9 @@ const ProspectingCustomers = () => {
       {/* Modals */}
       <EditModal
         isOpen={isEditModalOpen}
-        description={currentIndex !== null ? prospects[currentIndex].description : ""}
+        description={
+          currentIndex !== null ? prospects[currentIndex].description : ""
+        }
         title="Update Prospecting Calls"
         onSave={handleEditSave}
         onClose={() => setEditModalOpen(false)}

@@ -76,7 +76,7 @@ const GoogleCalendar = () => {
       return (
         <div
           key={index}
-          className={`relative px-2 py-2 sm:px-6 sm:py-10 border rounded-xl text-center ${bgColor} ${textColor} hover:opacity-90 hover:text-white transition group`}
+          className={`relative px-2 py-2 sm:px-6 sm:py-10 border rounded-xl text-center opacity-70 ${bgColor} ${textColor} hover:opacity-90 hover:text-white transition group`}
         >
           {/* Default View: Date */}
           <span className="block font-bold group-hover:hidden">{format(day, "d")}</span>
