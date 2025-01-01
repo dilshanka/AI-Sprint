@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Inquries from "./pages/CustomerInquiries";
 import SalesReport from "./pages/SalesReporting";
+import ChatbotPage from "./pages/ChatbotPage";
 
 
 const App: React.FC = () => {
@@ -17,6 +18,7 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<Login />} /> 
         <Route path="/register" element={<Register />} />
+        <Route path="/ChatbotPage" element={<ChatbotPage />} />
         <Route
           path="/*"
           element={
@@ -28,6 +30,7 @@ const App: React.FC = () => {
                 <Route path="/dashboard" element={<SalesRepDashboard />} />
                 <Route path="/Inquries" element={<Inquries />} />
                 <Route path="/SalesReport" element={<SalesReport />} />
+             
               </Routes>
             </Layout>
           }
