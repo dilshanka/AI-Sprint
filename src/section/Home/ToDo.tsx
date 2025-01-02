@@ -64,7 +64,7 @@ const ToDoList = () => {
       id: "",
       description: "",
       status: "Pending",
-      priority: "",
+      priority: "Low",
       endDate: "",
     });
     setShowPopup(true);
@@ -142,7 +142,9 @@ const ToDoList = () => {
   ) => (
     <div className="mb-8">
       <div className="flex justify-between">
-        <h2 className=" text-sm sm:text-base md:text-lg lg:text-xl font-bold mb-2">{title}</h2>
+        <h2 className=" text-sm sm:text-base md:text-lg lg:text-xl font-bold mb-2">
+          {title}
+        </h2>
         <SearchBar
           placeholder={`Search by ${selectedColumn}`}
           value={searchQuery}
