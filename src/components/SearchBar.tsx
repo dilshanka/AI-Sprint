@@ -19,10 +19,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
 }) => {
   return (
     <div className="flex items-center gap-2 mb-4">
-        <select
+      <select
         value={selectedColumn}
         onChange={onColumnChange}
-        className="px-2 py-2 border rounded-xl border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-100 cursor-pointer font-inter"
+        className="sm:px-2 py-2 text-xs sm:text-sm lg:text-base border rounded-xl border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-100 cursor-pointer font-inter"
       >
         {columns.map((column, index) => (
           <option key={index} value={column}>
@@ -40,7 +40,6 @@ const SearchBar: React.FC<SearchBarProps> = ({
         />
         <AiOutlineSearch className="absolute left-3 top-3 text-gray-600" />
       </div>
-      
     </div>
   );
 };

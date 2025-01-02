@@ -142,7 +142,7 @@ const ToDoList = () => {
   ) => (
     <div className="mb-8">
       <div className="flex justify-between">
-        <h2 className="text-lg sm:text-xl font-bold mb-2">{title}</h2>
+        <h2 className=" text-sm sm:text-base md:text-lg lg:text-xl font-bold mb-2">{title}</h2>
         <SearchBar
           placeholder={`Search by ${selectedColumn}`}
           value={searchQuery}
@@ -155,7 +155,7 @@ const ToDoList = () => {
       <div className="overflow-x-auto">
         <table className="table-auto w-full text-left border border-gray-300">
           <thead>
-            <tr className="bg-gray-200 font-semibold text-sm sm:text-base sm:text-center">
+            <tr className="bg-gray-200 font-semibold text-xs xsm:text-sm sm:text-base sm:text-center">
               <th className="p-2 border-gray-300 text-start">Description</th>
               <th className="p-2 border-gray-300">Status</th>
               <th className="p-2 border-gray-300">Priority</th>
@@ -167,14 +167,14 @@ const ToDoList = () => {
             {tasks.map((task, index) => (
               <tr
                 key={index}
-                className="hover:bg-gray-100 text-xs xsm:text-sm sm:text-base even:bg-gray-50"
+                className="hover:bg-gray-100 text-[10px] xsm:text-sm sm:text-base even:bg-gray-50"
               >
                 <td className="p-2 border-y border-l border-gray-300">
                   {task.description}
                 </td>
-                <td className="p-2 border-y border-gray-300 text-center">
+                <td className="p-2 border-y border-gray-300 text-center text-nowrap">
                   <span
-                    className={`px-1 xsm:px-2 py-1 rounded-xl border ${getStatusStyles(
+                    className={`px-1 xsm:px-2 py-1 rounded xsm:rounded-xl border ${getStatusStyles(
                       task.status
                     )}`}
                   >
@@ -183,7 +183,7 @@ const ToDoList = () => {
                 </td>
                 <td className="p-2 border-y border-gray-300 text-center">
                   <span
-                    className={`px-1 xsm:px-2 py-1 rounded-xl border ${getPriorityStyles(
+                    className={`px-1 xsm:px-2 py-1 rounded xsm:rounded-xl border ${getPriorityStyles(
                       task.priority
                     )}`}
                   >
@@ -193,7 +193,7 @@ const ToDoList = () => {
                 <td className="p-2 border-y border-gray-300 text-center">
                   {task.endDate}
                 </td>
-                <td className="p-2 border-y border-r border-gray-300 flex justify-center gap-2">
+                <td className="p-2 border-y border-gray-300 text-center">
                   {isQueue ? (
                     <button
                       onClick={() => openConfirmPopup(index)}
@@ -230,13 +230,13 @@ const ToDoList = () => {
 
   return (
     <div className="mt-4 sm:mt-8">
-      <div className="flex justify-between items-center">
-        <h1 className="text-xl md:text-3xl font-bold mb-2 sm:mb-4">
+      <div className="flex justify-between items-center pb-2">
+        <h1 className="capitalize font-inter font-semibold text-xl md:text-3xl mb-2 sm:mb-4">
           Task Management
         </h1>
         <button
           onClick={openAddPopup}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          className="bg-blue-500 text-white text-sm sm:text-base px-2 sm:px-4 py-1 sm:py-2 rounded hover:bg-blue-600"
         >
           Add Task
         </button>
