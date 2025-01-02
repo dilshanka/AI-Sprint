@@ -1,46 +1,47 @@
-import DeleteModal from "@/components/Home/DeleteModal";
-import EditModal from "@/components/Home/EditModal";
+import EditCalls from "@/components/Home/EditCalls";
+import SearchBar from "@/components/SearchBar";
+import { Calls, customerCalls } from "@/constants/customerCalls";
 import { useState } from "react";
-import { MdDelete, MdEdit } from "react-icons/md";
+import { MdEdit } from "react-icons/md";
 
 const CustomerCalls = () => {
-  const [calls, setCalls] = useState([
-    { description: "Call client A", status: "Pending" },
-    { description: "Follow up with client B", status: "Completed" },
-    { description: "Call client C", status: "In Progress" },
-    { description: "Follow up with client D", status: "Completed" },
-    { description: "Call client E", status: "Pending" },
-  ]);
-
+  const [calls, setCalls] = useState<Calls[]>(customerCalls);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
-  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState<number | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedColumn, setSelectedColumn] = useState("Name");
+  const [currentCall, setCurrentCall] = useState<Calls | null>(null);
 
-  const handleEditClick = (index: number) => {
-    setCurrentIndex(index);
+  const filteredCalls = calls.filter((call) => {
+    const columnValue = call[selectedColumn.toLowerCase() as keyof typeof call];
+    return columnValue
+      ? columnValue.toString().toLowerCase().includes(searchQuery.toLowerCase())
+      : false;
+  });
+
+  const handleEditClick = (call: Calls) => {
+    setCurrentCall(call);
     setEditModalOpen(true);
   };
 
-  const handleDeleteClick = (index: number) => {
-    setCurrentIndex(index);
-    setDeleteModalOpen(true);
-  };
+  // const handleDeleteClick = (index: number) => {
+  //   setCurrentIndex(index);
+  //   setDeleteModalOpen(true);
+  // };
 
-  const handleEditSave = (newDescription: string) => {
-    if (currentIndex !== null) {
-      const updatedCalls = [...calls];
-      updatedCalls[currentIndex].description = newDescription;
-      setCalls(updatedCalls);
-    }
+  const handleEditSave = (updateCall: Calls) => {
+    const updatedCalls = calls.map((call) =>
+      call.id === currentCall?.id ? updateCall : call
+    );
+    setCalls(updatedCalls); // Update the task list with the edited task
     setEditModalOpen(false);
   };
 
-  const handleDeleteConfirm = () => {
-    if (currentIndex !== null) {
-      setCalls(calls.filter((_, i) => i !== currentIndex));
-    }
-    setDeleteModalOpen(false);
-  };
+  // const handleDeleteConfirm = () => {
+  //   if (currentCall !== null) {
+  //     setCalls(calls.filter((_, i) => i !== currentCall));
+  //   }
+  //   setDeleteModalOpen(false);
+  // };
 
   const getStatusStyles = (status: string) => {
     switch (status) {
@@ -55,27 +56,62 @@ const CustomerCalls = () => {
     }
   };
 
+  const getPriorityStyles = (status: string) => {
+    switch (status) {
+      case "Low":
+        return "bg-green-100 text-green-700 border-green-500";
+      case "Medium":
+        return "bg-yellow-100 text-yellow-700 border-yellow-500";
+      case "High":
+        return "bg-red-100 text-red-700 border-red-500";
+      default:
+        return "bg-gray-100 text-gray-700 border-gray-500";
+    }
+  };
+
   return (
     <div className="mt-4 sm:mt-8">
-      <h2 className="capitalize font-inter font-semibold text-xl md:text-3xl mb-2 sm:mb-4">
-        Customer Calls
-      </h2>
+      <div className="flex justify-between">
+        <h2 className="capitalize font-inter font-semibold text-xl md:text-3xl mb-2 sm:mb-4">
+          Customer Calls
+        </h2>
+        {/* Search Bar */}
+        <SearchBar
+          placeholder={`Search by ${selectedColumn}`}
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          columns={["Name", "Description", "Status", "Priority"]}
+          selectedColumn={selectedColumn}
+          onColumnChange={(e) => setSelectedColumn(e.target.value)}
+        />
+      </div>
       <table className="table-auto w-full border border-gray-300">
         <thead>
           <tr className="bg-gray-200 font-inter text-sm sm:text-center">
-            <th className="p-2 border-gray-300">Description</th>
+            <th className="p-2 border-gray-300 text-start">Customer Name</th>
+            <th className="p-2 border-gray-300 text-start">Description</th>
             <th className="p-2 border-gray-300">Status</th>
+            <th className="p-2 border-gray-300">Priority</th>
+            <th className="p-2 border-gray-300">Date</th>
             <th className="p-2 border-gray-300">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {calls.map((call, index) => (
+          {filteredCalls.map((call, index) => (
             <tr
               key={index}
-              className="hover:bg-gray-100 font-medium text-xs xsm:text-sm md:text-base even:bg-gray-50"
+              className="hover:bg-gray-100 font-medium text-xs xsm:text-sm even:bg-gray-50"
             >
               <td className="p-2 border-y border-l border-gray-300">
+                {call.name}
+              </td>
+              <td className="p-2 border-y border-gray-300">
                 {call.description}
+                {call.autoAction && (
+                  <span className="ml-2 text-red-500 bg-red-200 text-[10px] border p-1 rounded">
+                    {call.autoAction}
+                  </span>
+                )}
               </td>
               <td className="p-2 border-y border-gray-300 text-center text-[10px] xsm:text-xs sm:text-sm">
                 <span
@@ -86,9 +122,21 @@ const CustomerCalls = () => {
                   {call.status}
                 </span>
               </td>
+              <td className="p-2 border-y border-gray-300 text-center text-[10px] xsm:text-xs sm:text-sm">
+                <span
+                  className={`px-1 xsm:px-2 py-1 rounded-xl border ${getPriorityStyles(
+                    call.priority
+                  )}`}
+                >
+                  {call.priority}
+                </span>
+              </td>
+              <td className="p-2 border-y border-gray-300 text-center">
+                {call.endDate}
+              </td>
               <td className="p-2 border-y border-gray-300 text-center">
                 <button
-                  onClick={() => handleEditClick(index)}
+                  onClick={() => handleEditClick(call)}
                   disabled={call.status === "Completed"}
                   className={`mr-2 px-2 py-1 rounded ${
                     call.status === "Completed"
@@ -98,13 +146,12 @@ const CustomerCalls = () => {
                 >
                   <MdEdit />
                 </button>
-
-                <button
+                {/* <button
                   onClick={() => handleDeleteClick(index)}
                   className="px-2 py-1 bg-gray-300 text-red-500 hover:bg-gray-500 hover:text-red-300 rounded"
                 >
                   <MdDelete />
-                </button>
+                </button> */}
               </td>
             </tr>
           ))}
@@ -112,20 +159,18 @@ const CustomerCalls = () => {
       </table>
 
       {/* Modals */}
-      <EditModal
+      <EditCalls
         isOpen={isEditModalOpen}
-        description={
-          currentIndex !== null ? calls[currentIndex].description : ""
-        }
+        call={currentCall}
         title="Update Customer Calls"
         onSave={handleEditSave}
         onClose={() => setEditModalOpen(false)}
       />
-      <DeleteModal
+      {/* <DeleteModal
         isOpen={isDeleteModalOpen}
         onConfirm={handleDeleteConfirm}
         onClose={() => setDeleteModalOpen(false)}
-      />
+      /> */}
     </div>
   );
 };

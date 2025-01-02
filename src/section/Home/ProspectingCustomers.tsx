@@ -1,116 +1,75 @@
-// import { useState } from "react";
-
-// const ProspectingCustomers = () => {
-//   const [prospects, setProspects] = useState([
-//     { description: "Send email to prospect A", status: "In Progress" },
-//     { description: "Schedule meeting with prospect B", status: "Pending" },
-//   ]);
-
-//   const handleDelete = (index: number) => {
-//     setProspects(prospects.filter((_, i) => i !== index));
-//   };
-
-//   const handleEdit = (index: number) => {
-//     const newDescription = prompt("Enter new description:");
-//     if (newDescription) {
-//       const updatedProspects = [...prospects];
-//       updatedProspects[index].description = newDescription;
-//       setProspects(updatedProspects);
-//     }
-//   };
-
-//   return (
-//     <div className="p-4">
-//       <h2 className="text-xl font-bold mb-4">Prospecting Customers</h2>
-//       <table className="table-auto w-full border border-gray-300">
-//         <thead>
-//           <tr>
-//             <th className="border px-4 py-2">Description</th>
-//             <th className="border px-4 py-2">Status</th>
-//             <th className="border px-4 py-2">Actions</th>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           {prospects.map((prospect, index) => (
-//             <tr key={index}>
-//               <td className="border px-4 py-2">{prospect.description}</td>
-//               <td className="border px-4 py-2">{prospect.status}</td>
-//               <td className="border px-4 py-2">
-//                 <button
-//                   onClick={() => handleEdit(index)}
-//                   className="mr-2 px-2 py-1 bg-blue-500 text-white rounded"
-//                 >
-//                   Edit
-//                 </button>
-//                 <button
-//                   onClick={() => handleDelete(index)}
-//                   className="px-2 py-1 bg-red-500 text-white rounded"
-//                 >
-//                   Delete
-//                 </button>
-//               </td>
-//             </tr>
-//           ))}
-//         </tbody>
-//       </table>
-//     </div>
-//   );
-// };
-
-// export default ProspectingCustomers;
-
-import DeleteModal from "@/components/Home/DeleteModal";
-import EditModal from "@/components/Home/EditModal";
+import EditCustomers from "@/components/Home/EditCustomers";
+import SearchBar from "@/components/SearchBar";
+import {
+  Customers,
+  prospectingCustomers,
+} from "@/constants/prospectingCustomers";
 import { useState } from "react";
-import { MdDelete, MdEdit } from "react-icons/md";
+import { MdEdit } from "react-icons/md";
 
 const ProspectingCustomers = () => {
-  const [prospects, setProspects] = useState([
-    { description: "Call client A", status: "Pending" },
-    { description: "Follow up with client B", status: "Completed" },
-    { description: "Call client C", status: "In Progress" },
-    { description: "Follow up with client D", status: "Completed" },
-    { description: "Call client E", status: "Pending" },
-  ]);
-
+  const [customers, setCustomers] = useState<Customers[]>(prospectingCustomers);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
-  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState<number | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedColumn, setSelectedColumn] = useState("Name");
+  const [currentCustomer, setCurrentCustomer] = useState<Customers | null>(
+    null
+  );
 
-  const handleEditClick = (index: number) => {
-    setCurrentIndex(index);
+  const filteredCustomers = customers.filter((customer) => {
+    const columnValue =
+      customer[selectedColumn.toLowerCase() as keyof typeof customer];
+    return columnValue
+      ? columnValue.toString().toLowerCase().includes(searchQuery.toLowerCase())
+      : false;
+  });
+
+  const handleEditClick = (customer: Customers) => {
+    setCurrentCustomer(customer);
     setEditModalOpen(true);
   };
 
-  const handleDeleteClick = (index: number) => {
-    setCurrentIndex(index);
-    setDeleteModalOpen(true);
-  };
+  // const handleDeleteClick = (index: number) => {
+  //   setCurrentIndex(index);
+  //   setDeleteModalOpen(true);
+  // };
 
-  const handleEditSave = (newDescription: string) => {
-    if (currentIndex !== null) {
-      const updatedProspects = [...prospects];
-      updatedProspects[currentIndex].description = newDescription;
-      setProspects(updatedProspects);
-    }
+  const handleEditSave = (updateCustomer: Customers) => {
+    const updatedCustomers = customers.map((customer) =>
+      customer.id === currentCustomer?.id ? updateCustomer : customer
+    );
+    setCustomers(updatedCustomers); // Update the task list with the edited task
     setEditModalOpen(false);
   };
 
-  const handleDeleteConfirm = () => {
-    if (currentIndex !== null) {
-      setProspects(prospects.filter((_, i) => i !== currentIndex));
-    }
-    setDeleteModalOpen(false);
-  };
+  // const handleDeleteConfirm = () => {
+  //   if (currentIndex !== null) {
+  //     setProspects(prospects.filter((_, i) => i !== currentIndex));
+  //   }
+  //   setDeleteModalOpen(false);
+  // };
 
   const getStatusStyles = (status: string) => {
     switch (status) {
-      case "Pending":
+      case "Not Contacted":
         return "bg-yellow-100 text-yellow-700 border-yellow-500";
-      case "Completed":
+      case "Meeting Scheduled":
         return "bg-green-100 text-green-700 border-green-500";
-      case "In Progress":
+      case "Contacted":
         return "bg-blue-100 text-blue-700 border-blue-500";
+      default:
+        return "bg-gray-100 text-gray-700 border-gray-500";
+    }
+  };
+
+  const getPriorityStyles = (status: string) => {
+    switch (status) {
+      case "Low":
+        return "bg-green-100 text-green-700 border-green-500";
+      case "Medium":
+        return "bg-yellow-100 text-yellow-700 border-yellow-500";
+      case "High":
+        return "bg-red-100 text-red-700 border-red-500";
       default:
         return "bg-gray-100 text-gray-700 border-gray-500";
     }
@@ -118,27 +77,43 @@ const ProspectingCustomers = () => {
 
   return (
     <div className="mt-4 sm:mt-8">
-      <h2 className="capitalize font-inter font-semibold text-xl md:text-3xl mb-2 sm:mb-4">
-        Prospecting Customers
-      </h2>
+      <div className="flex justify-between">
+        <h2 className="capitalize font-inter font-semibold text-xl md:text-3xl mb-2 sm:mb-4">
+          Prospecting Customers
+        </h2>
+        <SearchBar
+          placeholder={`Search by ${selectedColumn}`}
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          columns={["Name", "Description", "Status", "Priority"]}
+          selectedColumn={selectedColumn}
+          onColumnChange={(e) => setSelectedColumn(e.target.value)}
+        />
+      </div>
       <table className="table-auto w-full border border-gray-300">
         <thead>
           <tr className="bg-gray-200 font-inter text-sm sm:text-center">
-            <th className="p-2 border-gray-300">Description</th>
+            <th className="p-2 border-gray-300 text-start">Customer Name</th>
+            <th className="p-2 border-gray-300 text-start">Description</th>
             <th className="p-2 border-gray-300">Status</th>
+            <th className="p-2 border-gray-300">Priority</th>
+            <th className="p-2 border-gray-300">Date</th>
             <th className="p-2 border-gray-300">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {prospects.map((prospect, index) => (
+          {filteredCustomers.map((prospect, index) => (
             <tr
               key={index}
-              className="hover:bg-gray-100 font-medium text-xs xsm:text-sm md:text-base even:bg-gray-50"
+              className="hover:bg-gray-100 font-medium text-xs xsm:text-sm sm:text-base even:bg-gray-50"
             >
               <td className="p-2 border-y border-l border-gray-300">
+                {prospect.name}
+              </td>
+              <td className="p-2 border-y border-gray-300">
                 {prospect.description}
               </td>
-              <td className="p-2 border-y border-gray-300 text-center text-[10px] xsm:text-xs sm:text-sm">
+              <td className="p-2 border-y border-gray-300 text-center text-[10px] xsm:text-xs sm:text-xs">
                 <span
                   className={`px-1 xsm:px-2 py-1 rounded-xl border ${getStatusStyles(
                     prospect.status
@@ -147,9 +122,21 @@ const ProspectingCustomers = () => {
                   {prospect.status}
                 </span>
               </td>
+              <td className="p-2 border-y border-gray-300 text-center text-[10px] xsm:text-xs sm:text-sm">
+                <span
+                  className={`px-1 xsm:px-2 py-1 rounded-xl border ${getPriorityStyles(
+                    prospect.priority
+                  )}`}
+                >
+                  {prospect.priority}
+                </span>
+              </td>
+              <td className="p-2 border-y border-gray-300 text-center">
+                {prospect.date}
+              </td>
               <td className="p-2 border-y border-gray-300 text-center">
                 <button
-                  onClick={() => handleEditClick(index)}
+                  onClick={() => handleEditClick(prospect)}
                   disabled={prospect.status === "Completed"}
                   className={`mr-2 px-2 py-1 rounded ${
                     prospect.status === "Completed"
@@ -160,12 +147,12 @@ const ProspectingCustomers = () => {
                   <MdEdit />
                 </button>
 
-                <button
+                {/* <button
                   onClick={() => handleDeleteClick(index)}
                   className="px-2 py-1 bg-gray-300 text-red-500 hover:bg-gray-500 hover:text-red-300 rounded"
                 >
                   <MdDelete />
-                </button>
+                </button> */}
               </td>
             </tr>
           ))}
@@ -173,20 +160,18 @@ const ProspectingCustomers = () => {
       </table>
 
       {/* Modals */}
-      <EditModal
+      <EditCustomers
         isOpen={isEditModalOpen}
-        description={
-          currentIndex !== null ? prospects[currentIndex].description : ""
-        }
-        title="Update Prospecting Calls"
+        customer={currentCustomer}
+        title="Update Customer Details"
         onSave={handleEditSave}
         onClose={() => setEditModalOpen(false)}
       />
-      <DeleteModal
+      {/* <DeleteModal
         isOpen={isDeleteModalOpen}
         onConfirm={handleDeleteConfirm}
         onClose={() => setDeleteModalOpen(false)}
-      />
+      /> */}
     </div>
   );
 };
