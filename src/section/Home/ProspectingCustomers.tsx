@@ -92,7 +92,7 @@ const ProspectingCustomers = () => {
       </div>
       <table className="table-auto w-full border border-gray-300">
         <thead>
-          <tr className="bg-gray-200 font-inter text-sm sm:text-center">
+          <tr className="bg-gray-200 font-semibold text-sm sm:text-base sm:text-center">
             <th className="p-2 border-gray-300 text-start">Customer Name</th>
             <th className="p-2 border-gray-300 text-start">Description</th>
             <th className="p-2 border-gray-300">Status</th>
@@ -105,7 +105,7 @@ const ProspectingCustomers = () => {
           {filteredCustomers.map((prospect, index) => (
             <tr
               key={index}
-              className="hover:bg-gray-100 font-medium text-xs xsm:text-sm sm:text-base even:bg-gray-50"
+              className="hover:bg-gray-100 text-xs xsm:text-sm sm:text-base even:bg-gray-50"
             >
               <td className="p-2 border-y border-l border-gray-300">
                 {prospect.name}
