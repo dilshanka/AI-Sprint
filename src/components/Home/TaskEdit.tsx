@@ -8,7 +8,12 @@ interface EditTaskProps {
   onClose: () => void;
 }
 
-const EditTask: React.FC<EditTaskProps> = ({ isOpen, task, onSave, onClose }) => {
+const EditTask: React.FC<EditTaskProps> = ({
+  isOpen,
+  task,
+  onSave,
+  onClose,
+}) => {
   const [updatedTask, setUpdatedTask] = useState<Task | null>(task);
 
   useEffect(() => {

@@ -1,17 +1,15 @@
-import DeleteModal from "@/components/Home/DeleteModal";
-import EditModal from "@/components/Home/EditModal";
+import EditCalls from "@/components/Home/EditCalls";
 import SearchBar from "@/components/SearchBar";
-import { customerCalls } from "@/constants/customerCalls";
+import { Calls, customerCalls } from "@/constants/customerCalls";
 import { useState } from "react";
 import { MdEdit } from "react-icons/md";
 
 const CustomerCalls = () => {
-  const [calls, setCalls] = useState(customerCalls);
+  const [calls, setCalls] = useState<Calls[]>(customerCalls);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
-  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedColumn, setSelectedColumn] = useState("Name");
+  const [currentCall, setCurrentCall] = useState<Calls | null>(null);
 
   const filteredCalls = calls.filter((call) => {
     const columnValue = call[selectedColumn.toLowerCase() as keyof typeof call];
@@ -20,9 +18,9 @@ const CustomerCalls = () => {
       : false;
   });
 
-  const handleEditClick = (index: number) => {
-    setCurrentIndex(index);
-    setEditModalOpen(true); 
+  const handleEditClick = (call: Calls) => {
+    setCurrentCall(call);
+    setEditModalOpen(true);
   };
 
   // const handleDeleteClick = (index: number) => {
@@ -30,21 +28,20 @@ const CustomerCalls = () => {
   //   setDeleteModalOpen(true);
   // };
 
-  const handleEditSave = (newDescription: string) => {
-    if (currentIndex !== null) {
-      const updatedCalls = [...calls];
-      updatedCalls[currentIndex].description = newDescription;
-      setCalls(updatedCalls);
-    }
+  const handleEditSave = (updateCall: Calls) => {
+    const updatedCalls = calls.map((call) =>
+      call.description === currentCall?.description ? updateCall : call
+    );
+    setCalls(updatedCalls); // Update the task list with the edited task
     setEditModalOpen(false);
   };
 
-  const handleDeleteConfirm = () => {
-    if (currentIndex !== null) {
-      setCalls(calls.filter((_, i) => i !== currentIndex));
-    }
-    setDeleteModalOpen(false);
-  };
+  // const handleDeleteConfirm = () => {
+  //   if (currentCall !== null) {
+  //     setCalls(calls.filter((_, i) => i !== currentCall));
+  //   }
+  //   setDeleteModalOpen(false);
+  // };
 
   const getStatusStyles = (status: string) => {
     switch (status) {
@@ -134,7 +131,7 @@ const CustomerCalls = () => {
               </td>
               <td className="p-2 border-y border-gray-300 text-center">
                 <button
-                  onClick={() => handleEditClick(index)}
+                  onClick={() => handleEditClick(call)}
                   disabled={call.status === "Completed"}
                   className={`mr-2 px-2 py-1 rounded ${
                     call.status === "Completed"
@@ -157,20 +154,18 @@ const CustomerCalls = () => {
       </table>
 
       {/* Modals */}
-      <EditModal
+      <EditCalls
         isOpen={isEditModalOpen}
-        description={
-          currentIndex !== null ? calls[currentIndex].description : ""
-        }
+        call={currentCall}
         title="Update Customer Calls"
         onSave={handleEditSave}
         onClose={() => setEditModalOpen(false)}
       />
-      <DeleteModal
+      {/* <DeleteModal
         isOpen={isDeleteModalOpen}
         onConfirm={handleDeleteConfirm}
         onClose={() => setDeleteModalOpen(false)}
-      />
+      /> */}
     </div>
   );
 };
