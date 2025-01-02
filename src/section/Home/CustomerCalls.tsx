@@ -30,7 +30,7 @@ const CustomerCalls = () => {
 
   const handleEditSave = (updateCall: Calls) => {
     const updatedCalls = calls.map((call) =>
-      call.description === currentCall?.description ? updateCall : call
+      call.id === currentCall?.id ? updateCall : call
     );
     setCalls(updatedCalls); // Update the task list with the edited task
     setEditModalOpen(false);
@@ -100,13 +100,18 @@ const CustomerCalls = () => {
           {filteredCalls.map((call, index) => (
             <tr
               key={index}
-              className="hover:bg-gray-100 font-medium text-xs xsm:text-sm md:text-base even:bg-gray-50"
+              className="hover:bg-gray-100 font-medium text-xs xsm:text-sm even:bg-gray-50"
             >
               <td className="p-2 border-y border-l border-gray-300">
                 {call.name}
               </td>
               <td className="p-2 border-y border-gray-300">
                 {call.description}
+                {call.autoAction && (
+                  <span className="ml-2 text-red-500 bg-red-200 text-[10px] border p-1 rounded">
+                    {call.autoAction}
+                  </span>
+                )}
               </td>
               <td className="p-2 border-y border-gray-300 text-center text-[10px] xsm:text-xs sm:text-sm">
                 <span

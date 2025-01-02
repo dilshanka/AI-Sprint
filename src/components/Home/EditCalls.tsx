@@ -28,45 +28,70 @@ const EditCalls: React.FC<EditCallsProps> = ({
         <h3 className="text-base sm:text-lg lg:text-xl font-semibold mb-2 sm:mb-4">
           Edit Calls
         </h3>
-        <div className="mb-4">
-          <label className="block mb-2 font-medium">Customer Name</label>
-          <input
-            type="text"
-            value={updatedCall?.name}
-            onChange={(e) =>
-              setUpdatedCall({ ...updatedCall, name: e.target.value })
-            }
-            className="w-full p-2 border rounded"
-          />
+        <div className="flex justify-between gap-8 mb-4">
+          <div className="w-full">
+            <label className="block mb-2 font-medium">Customer Name</label>
+            <input
+              type="text"
+              value={updatedCall?.name}
+              onChange={(e) =>
+                setUpdatedCall({ ...updatedCall, name: e.target.value })
+              }
+              className="w-full p-2 border rounded"
+            />
+          </div>
+          <div className="w-full">
+            <label className="block mb-2 font-medium">Description</label>
+            <input
+              type="text"
+              value={updatedCall?.description}
+              onChange={(e) =>
+                setUpdatedCall({ ...updatedCall, description: e.target.value })
+              }
+              className="w-full p-2 border rounded"
+            />
+          </div>
         </div>
-        <div className="mb-4">
-          <label className="block mb-2 font-medium">Description</label>
-          <input
-            type="text"
-            value={updatedCall?.description}
-            onChange={(e) =>
-              setUpdatedCall({ ...updatedCall, description: e.target.value })
-            }
-            className="w-full p-2 border rounded"
-          />
+        <div className="flex justify-between gap-8 mb-4">
+          <div className="w-full">
+            <label className="block mb-2 font-medium">Auto Action</label>
+            <select
+              value={updatedCall?.autoAction || ""}
+              onChange={(e) =>
+                setUpdatedCall({
+                  ...updatedCall,
+                  autoAction: e.target.value as
+                    | "Auto Call"
+                    | "Auto Voice"
+                    | null,
+                })
+              }
+              className="w-full p-2 border rounded"
+            >
+              <option value="">None</option>
+              <option value="Auto Call">Auto Call</option>
+              <option value="Auto Voice">Auto Voice</option>
+            </select>
+          </div>
+          <div className="w-full">
+            <label className="block mb-2 font-medium">Status</label>
+            <select
+              value={updatedCall.status}
+              onChange={(e) =>
+                setUpdatedCall({ ...updatedCall, status: e.target.value })
+              }
+              className="w-full p-2 border rounded"
+            >
+              {["To Do", "In Progress", "Completed"].map((status) => (
+                <option key={status} value={status}>
+                  {status}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
-        <div className="mb-4">
-          <label className="block mb-2 font-medium">Status</label>
-          <select
-            value={updatedCall.status}
-            onChange={(e) =>
-              setUpdatedCall({ ...updatedCall, status: e.target.value })
-            }
-            className="w-full p-2 border rounded"
-          >
-            {["To Do", "In Progress", "Completed"].map((status) => (
-              <option key={status} value={status}>
-                {status}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="mb-4">
+        <div className="flex justify-between gap-8 mb-4">
+        <div className="w-full">
           <label className="block mb-2 font-medium">Priority</label>
           <select
             value={updatedCall.priority}
@@ -82,7 +107,7 @@ const EditCalls: React.FC<EditCallsProps> = ({
             ))}
           </select>
         </div>
-        <div className="mb-4">
+        <div className="w-full">
           <label className="block mb-2 font-medium">Date</label>
           <input
             type="date"
@@ -92,6 +117,7 @@ const EditCalls: React.FC<EditCallsProps> = ({
             }
             className="w-full p-2 border rounded"
           />
+        </div>
         </div>
         <div className="flex justify-end space-x-1 sm:space-x-2 text-sm sm:text-base">
           <button
