@@ -92,7 +92,7 @@ const ProspectingCustomers = () => {
       </div>
       <table className="table-auto w-full border border-gray-300">
         <thead>
-          <tr className="bg-gray-200 font-inter text-sm sm:text-center">
+          <tr className="bg-gray-200 font-semibold text-xs xsm:text-sm sm:text-base sm:text-center">
             <th className="p-2 border-gray-300 text-start">Customer Name</th>
             <th className="p-2 border-gray-300 text-start">Description</th>
             <th className="p-2 border-gray-300">Status</th>
@@ -105,7 +105,7 @@ const ProspectingCustomers = () => {
           {filteredCustomers.map((prospect, index) => (
             <tr
               key={index}
-              className="hover:bg-gray-100 font-medium text-xs xsm:text-sm sm:text-base even:bg-gray-50"
+              className="hover:bg-gray-100 text-[10px] xsm:text-sm sm:text-base even:bg-gray-50"
             >
               <td className="p-2 border-y border-l border-gray-300">
                 {prospect.name}
@@ -113,7 +113,7 @@ const ProspectingCustomers = () => {
               <td className="p-2 border-y border-gray-300">
                 {prospect.description}
               </td>
-              <td className="p-2 border-y border-gray-300 text-center text-[10px] xsm:text-xs sm:text-xs">
+              <td className="p-2 border-y border-gray-300 text-center text-[10px] xsm:text-xs sm:text-sm text-nowrap">
                 <span
                   className={`px-1 xsm:px-2 py-1 rounded-xl border ${getStatusStyles(
                     prospect.status

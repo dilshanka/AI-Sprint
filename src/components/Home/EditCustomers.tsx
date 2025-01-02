@@ -24,7 +24,7 @@ const EditCustomers: React.FC<EditCustomersProps> = ({
 
   return (
     <div className="fixed top-10 inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-      <div className="bg-white m-6 sm:m-0 p-6 rounded shadow-lg w-1/2">
+      <div className="bg-white m-6 sm:m-0 p-6 rounded shadow-lg w-full md:w-1/2">
         <h3 className="text-base sm:text-lg lg:text-xl font-semibold mb-2 sm:mb-4">
           Edit Customer
         </h3>

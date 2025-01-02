@@ -38,7 +38,7 @@ const GoogleCalendar = () => {
     return days.map((day, index) => (
       <div
         key={index}
-        className="text-sm sm:text-base text-center font-bold p-2 border-b bg-gray-200"
+        className="text-[10px] xsm:text-xs sm:text-base text-center font-bold p-2 border-b bg-gray-200"
       >
         {day}
       </div>
@@ -76,20 +76,20 @@ const GoogleCalendar = () => {
       return (
         <div
           key={index}
-          className={`relative px-2 py-2 sm:px-6 sm:py-10 border rounded-xl text-center opacity-70 ${bgColor} ${textColor} hover:opacity-90 hover:text-white transition group`}
+          className={`relative px-2 sm:px-6 py-1 xsm:py-2 sm:py-6 lg:py-10 border rounded sm:rounded-xl text-center opacity-70 ${bgColor} ${textColor} hover:opacity-90 hover:text-white transition group`}
         >
           {/* Default View: Date */}
           <span className="block font-bold group-hover:hidden">{format(day, "d")}</span>
 
           {/* Hover View: Task Details */}
           {event.todo || event.calls || event.prospecting ? (
-            <div className="hidden group-hover:block text-xs">
+            <div className="hidden group-hover:block text-[8px] md:text-[10px] lg:text-xs">
               {event.todo ? <p>To-Do: {event.todo}</p> : <p>No To-Do</p>}
               {event.calls ? <p>Calls: {event.calls}</p> : <p>No Calls</p>}
               {event.prospecting ? <p>Prospects: {event.prospecting}</p> : <p>No Prospects</p>}
             </div>
           ) : (
-            <div className="hidden group-hover:block text-xs">
+            <div className="hidden group-hover:block text-[8px] md:text-[10px] lg:text-xs">
               <p>No Appoinments</p>
             </div>
           )}
@@ -99,7 +99,7 @@ const GoogleCalendar = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 border rounded-xl bg-gray-50">
+    <div className="container mx-auto p-2 xsm:p-4 border rounded-xl bg-gray-50">
       <div className="flex justify-between items-center mb-4">
         <button
           onClick={handlePrevMonth}

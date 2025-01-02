@@ -24,7 +24,7 @@ const EditTask: React.FC<EditTaskProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-      <div className="bg-white m-6 sm:m-0 p-6 rounded shadow-lg w-1/2">
+      <div className="bg-white m-6 sm:m-0 p-6 rounded shadow-lg w-full md:w-1/2">
         <h3 className="text-lg font-semibold mb-4">Edit Task</h3>
         <div className="mb-4">
           <label className="block mb-2 font-medium">Description</label>
