@@ -142,7 +142,7 @@ const ToDoList = () => {
   ) => (
     <div className="mb-8">
       <div className="flex justify-between">
-        <h2 className=" text-sm sm:text-base md:text-lg lg:text-xl font-bold mb-2">
+        <h2 className="text-sm sm:text-base md:text-lg lg:text-xl font-bold mb-2">
           {title}
         </h2>
         <SearchBar
@@ -233,7 +233,7 @@ const ToDoList = () => {
   return (
     <div className="mt-4 sm:mt-8">
       <div className="flex justify-between items-center pb-2">
-        <h1 className="capitalize font-inter font-semibold text-xl md:text-3xl mb-2 sm:mb-4">
+        <h1 className="capitalize font-inter font-semibold text-xl md:text-4xl mb-2 sm:mb-4 text-[#008cd2]">
           Task Management
         </h1>
         <button

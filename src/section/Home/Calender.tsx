@@ -21,7 +21,7 @@ function Calender() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-between">
-        <h1 className="capitalize font-inter font-semibold text-xl md:text-3xl">
+        <h1 className="capitalize font-inter font-semibold text-xl md:text-4xl text-[#008cd2]">
           calender
         </h1>
         {/* <button

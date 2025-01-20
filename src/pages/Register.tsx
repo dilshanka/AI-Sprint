@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import RegisterImg from "../assets/images/register_img.jpg";
+import RegisterImg from "../assets/images/register1_img.jpg";
 import GoogleLogo from "../assets/images/google.png";
 import FacebookLogo from "../assets/images/facebook.jpg";
 
