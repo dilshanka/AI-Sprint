@@ -78,7 +78,7 @@ const ProspectingCustomers = () => {
   return (
     <div className="mt-4 sm:mt-8">
       <div className="flex justify-between">
-        <h2 className="capitalize font-inter font-semibold text-xl md:text-3xl mb-2 sm:mb-4">
+        <h2 className="capitalize font-inter font-semibold text-xl md:text-4xl mb-2 sm:mb-4 text-[#008cd2]">
           Prospecting Customers
         </h2>
         <SearchBar
