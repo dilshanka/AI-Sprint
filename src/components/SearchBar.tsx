@@ -36,7 +36,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-          className="w-full px-2 py-2 pl-10 border rounded-xl border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-100"
+          className="w-full px-2 py-2 pl-10 border text-xs sm:text-sm lg:text-base rounded-xl border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-100"
         />
         <AiOutlineSearch className="absolute left-3 top-3 text-gray-600" />
       </div>

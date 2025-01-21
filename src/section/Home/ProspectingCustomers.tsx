@@ -53,7 +53,7 @@ const ProspectingCustomers = () => {
     switch (status) {
       case "Not Contacted":
         return "bg-yellow-100 text-yellow-700 border-yellow-500";
-      case "Meeting Scheduled":
+      case "Meeting":
         return "bg-green-100 text-green-700 border-green-500";
       case "Contacted":
         return "bg-blue-100 text-blue-700 border-blue-500";
@@ -78,7 +78,7 @@ const ProspectingCustomers = () => {
   return (
     <div className="mt-4 sm:mt-8">
       <div className="flex justify-between">
-        <h2 className="capitalize font-inter font-semibold text-xl md:text-4xl mb-2 sm:mb-4 text-[#008cd2]">
+        <h2 className="capitalize font-inter font-semibold text-xl md:text-4xl mb-2 sm:mb-4 text-[#008cd2] xsm:text-white">
           Prospecting Customers
         </h2>
         <SearchBar
@@ -105,7 +105,7 @@ const ProspectingCustomers = () => {
           {filteredCustomers.map((prospect, index) => (
             <tr
               key={index}
-              className="hover:bg-gray-100 text-[10px] xsm:text-sm sm:text-base even:bg-gray-50"
+              className="hover:bg-gray-100 text-[10px] xsm:text-sm sm:text-base odd:bg-white even:bg-gray-50"
             >
               <td className="p-2 border-y border-l border-gray-300">
                 {prospect.name}

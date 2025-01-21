@@ -32,7 +32,7 @@ const SalesByRegionReport: React.FC = () => {
         </thead>
         <tbody>
           {regionData.map((row, index) => (
-            <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : ""}>
+            <tr key={index} className="odd:bg-white even:bg-gray-50">
               <td className="px-4 py-2 border">{row.region}</td>
               <td className="px-4 py-2 border">{row.sales}</td>
             </tr>

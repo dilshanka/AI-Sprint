@@ -72,7 +72,7 @@ const CustomerCalls = () => {
   return (
     <div className="mt-4 sm:mt-8">
       <div className="flex justify-between">
-        <h2 className="capitalize font-inter font-semibold text-xl md:text-4xl mb-2 sm:mb-4 text-[#008cd2]">
+        <h2 className="capitalize font-inter font-semibold text-xl md:text-4xl mb-2 sm:mb-4 text-[#008cd2] xsm:text-white">
           Customer Calls
         </h2>
         {/* Search Bar */}
@@ -100,7 +100,7 @@ const CustomerCalls = () => {
           {filteredCalls.map((call, index) => (
             <tr
               key={index}
-              className="hover:bg-gray-100 text-[10px] xsm:text-sm sm:text-base even:bg-gray-50"
+              className="hover:bg-gray-100 text-[10px] xsm:text-sm sm:text-base odd:bg-white even:bg-gray-50"
             >
               <td className="p-2 border-y border-l border-gray-300">
                 {call.name}

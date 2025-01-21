@@ -169,7 +169,7 @@ const ToDoList = () => {
             {tasks.map((task, index) => (
               <tr
                 key={index}
-                className="hover:bg-gray-100 text-[10px] xsm:text-sm sm:text-base even:bg-gray-50"
+                className="hover:bg-gray-100 text-[10px] xsm:text-sm sm:text-base odd:bg-white even:bg-gray-50"
               >
                 <td className="p-2 border-y border-l border-gray-300">
                   {task.description}
@@ -233,12 +233,12 @@ const ToDoList = () => {
   return (
     <div className="mt-4 sm:mt-8">
       <div className="flex justify-between items-center pb-2">
-        <h1 className="capitalize font-inter font-semibold text-xl md:text-4xl mb-2 sm:mb-4 text-[#008cd2]">
+        <h1 className="capitalize font-inter font-semibold text-xl md:text-4xl mb-2 sm:mb-4 text-[#008cd2] xsm:text-white">
           Task Management
         </h1>
         <button
           onClick={openAddPopup}
-          className="bg-blue-500 text-white text-sm sm:text-base px-2 sm:px-4 py-1 sm:py-2 rounded hover:bg-blue-600"
+          className="bg-blue-500 xsm:bg-white text-white xsm:text-blue-500 text-sm sm:text-base px-2 sm:px-4 py-1 sm:py-2 rounded hover:bg-blue-600 hover:text-white"
         >
           Add Task
         </button>
