@@ -21,7 +21,7 @@ const SalesReport: React.FC = () => {
       <h1 className="text-4xl font-extrabold  text-center text-gray-800 mt-10">Reports</h1>
 
       {/* Checkbox Selection */}
-      <div className="grid grid-cols-2 gap-4 mt-8">
+      <div className="grid grid-cols-2 gap-4 my-8 font-semibold">
         <label>
           <input
             type="checkbox"

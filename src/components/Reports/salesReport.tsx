@@ -26,7 +26,7 @@ const SalesReporting: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="bg-white p-4">
       <h2 className="text-2xl font-semibold mb-4">Sales Reporting</h2>
       <table className="w-full border-collapse border border-gray-300">
         <thead className="bg-gray-200">
