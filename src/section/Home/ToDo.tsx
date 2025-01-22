@@ -233,7 +233,7 @@ const ToDoList = () => {
   return (
     <div className="mt-4 sm:mt-8">
       <div className="flex justify-between items-center pb-2">
-        <h1 className="capitalize font-inter font-semibold text-xl md:text-4xl mb-2 sm:mb-4 text-[#008cd2] xsm:text-white">
+        <h1 className="capitalize font-inter font-semibold text-xl md:text-4xl mb-2 sm:mb-4 text-[#008cd2] xsm:text-black">
           Task Management
         </h1>
         <button

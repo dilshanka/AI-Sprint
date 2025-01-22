@@ -14,7 +14,7 @@ const Navbar: React.FC = () => {
     <nav className="bg-[#2a2f33] fixed top-0 left-0 w-full z-50 shadow-md">
       <div className="container mx-auto flex justify-between items-center p-4 ">
         <Link to="/home" className="text-white text-xl font-bold text-nowrap">
-          Sysco Sales Consultant
+          Sysco SalesMate
         </Link>
         <button
           className="text-white md:hidden"
